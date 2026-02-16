@@ -1,0 +1,137 @@
+[gd_scene format=3 uid="uid://c2yeiiu1rlvnb"]
+
+[ext_resource type="PackedScene" uid="uid://jo3odhf8xjrp" path="res://components/player/player.tscn" id="1_f3sb7"]
+[ext_resource type="PackedScene" uid="uid://b0t2qbym4yimy" path="res://components/water/underwater_camera.tscn" id="2_aqk2v"]
+[ext_resource type="PackedScene" uid="uid://cgba1f2faycgx" path="res://components/player_sfx/player_sound_effects.tscn" id="2_fj7yv"]
+[ext_resource type="PackedScene" uid="uid://cpfgf30gbyxot" path="res://components/interaction/interact_ray.tscn" id="3_036b0"]
+[ext_resource type="PackedScene" uid="uid://knjrvsl53tlf" path="res://components/inventory/inventory.tscn" id="3_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://cluex6dx1krkl" path="res://components/interaction/interactable.tscn" id="6_dwbse"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f3sb7"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_fj7yv"]
+sky_material = SubResource("ProceduralSkyMaterial_f3sb7")
+
+[sub_resource type="Environment" id="Environment_tlwt5"]
+background_mode = 2
+sky = SubResource("Sky_fj7yv")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_gv5m4"]
+colors = PackedColorArray(0.34781694, 0.34781697, 0.3478169, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_f3sb7"]
+frequency = 0.4256
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_fj7yv"]
+width = 64
+height = 64
+noise = SubResource("FastNoiseLite_f3sb7")
+color_ramp = SubResource("Gradient_gv5m4")
+seamless = true
+seamless_blend_skirt = 0.313
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tlwt5"]
+albedo_color = Color(0, 0.26, 0.025999974, 1)
+albedo_texture = SubResource("NoiseTexture2D_fj7yv")
+uv1_scale = Vector3(16.97, 16.97, 16.97)
+texture_filter = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f3sb7"]
+size = Vector3(20, 5.3671875, 7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fj7yv"]
+transparency = 1
+albedo_color = Color(0.445, 0.26, 1, 0.20392157)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_tlwt5"]
+material = SubResource("StandardMaterial3D_fj7yv")
+size = Vector2(20, 7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f3sb7"]
+transparency = 1
+albedo_color = Color(0.445, 0.26, 1, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fj7yv"]
+material = SubResource("StandardMaterial3D_f3sb7")
+size = Vector2(20, 7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fj7yv"]
+size = Vector3(20, 1, 6.984131)
+
+[sub_resource type="GDScript" id="GDScript_dwbse"]
+script/source = "extends Interactable
+
+func interact(player: Player):
+	var inventory = player.find_child(\"Inventory\")
+	if inventory:
+		inventory.add_item(\"An Item\")
+	get_parent().queue_free()
+"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pkg7o"]
+radius = 0.37770885
+
+[node name="World" type="Node3D" unique_id=526207465]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1282227865]
+environment = SubResource("Environment_tlwt5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1507703622]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Level" type="Node3D" parent="." unique_id=1303962453]
+
+[node name="GroundMesh" type="CSGBox3D" parent="Level" unique_id=2011547848]
+use_collision = true
+size = Vector3(20, 0.001, 20)
+material = SubResource("StandardMaterial3D_tlwt5")
+
+[node name="WaterArea" type="Area3D" parent="Level" unique_id=1266684452]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.1497836, -13.557945)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/WaterArea" unique_id=1459439296]
+shape = SubResource("BoxShape3D_f3sb7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/WaterArea" unique_id=881325345]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7325492, 0)
+mesh = SubResource("PlaneMesh_tlwt5")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Level/WaterArea" unique_id=1115967510]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.704517, 0)
+mesh = SubResource("PlaneMesh_fj7yv")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Level/WaterArea/MeshInstance3D2" unique_id=2063126009]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/WaterArea/MeshInstance3D2/StaticBody3D" unique_id=2124891953]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4592514, 0)
+shape = SubResource("BoxShape3D_fj7yv")
+
+[node name="Player" parent="." unique_id=921508093 instance=ExtResource("1_f3sb7")]
+
+[node name="UnderwaterCamera" parent="Player/Head/Camera3D" parent_id_path=PackedInt32Array(921508093, 919827520) index="0" unique_id=605777143 instance=ExtResource("2_aqk2v")]
+
+[node name="InteractRay" parent="Player/Head/Camera3D" parent_id_path=PackedInt32Array(921508093, 919827520) index="1" unique_id=1937416188 node_paths=PackedStringArray("PLAYER") instance=ExtResource("3_036b0")]
+PLAYER = NodePath("../../..")
+
+[node name="SoundEffects" parent="Player" unique_id=1564977819 instance=ExtResource("2_fj7yv")]
+
+[node name="Inventory" parent="Player" unique_id=1804944355 instance=ExtResource("3_tlwt5")]
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="." unique_id=79784725]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4950194, 1.3606169, 0)
+radius = 0.3733916
+
+[node name="Interactable" parent="CSGSphere3D" unique_id=1126084564 instance=ExtResource("6_dwbse")]
+script = SubResource("GDScript_dwbse")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGSphere3D/Interactable" unique_id=814704376]
+shape = SubResource("SphereShape3D_pkg7o")
+
+[editable path="Player"]

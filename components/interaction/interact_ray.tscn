@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cpfgf30gbyxot"]
+
+[ext_resource type="Script" uid="uid://dir2pv0ndv61j" path="res://components/interaction/interact_ray.gd" id="1_q43wh"]
+
+[node name="InteractRay" type="RayCast3D" unique_id=1937416188]
+target_position = Vector3(0, 0, -3)
+collision_mask = 4
+collide_with_areas = true
+collide_with_bodies = false
+script = ExtResource("1_q43wh")

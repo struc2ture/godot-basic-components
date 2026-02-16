@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://b0t2qbym4yimy"]
+
+[ext_resource type="Script" uid="uid://yobb5l4n3xbq" path="res://components/water/underwater_camera.gd" id="1_xorvp"]
+
+[node name="UnderwaterCamera" type="Node3D" unique_id=605777143]
+script = ExtResource("1_xorvp")
+
+[node name="UnderwaterEffect" type="Control" parent="." unique_id=620954146]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_behavior_recursive = 1
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="UnderwaterEffect" unique_id=161991151]
+copy_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UnderwaterEffect" unique_id=1603343136]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.46975636, 0.34971532, 0.8089125, 0.35686275)
