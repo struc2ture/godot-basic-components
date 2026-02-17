@@ -20,6 +20,7 @@ class_name Player extends CharacterBody3D
 @export var FOV_MIN: float = 80.0
 @export var FOV_MAX: float = 100.0
 @export var UNDERWATER_GRAVITY_DISABLED: bool = false
+@export var GRAVITY_OVERRIDE: float = 20.0
 
 
 @onready var HEAD: Node3D = $Head
@@ -56,6 +57,19 @@ var step_sound_debounce_timeout: float = 0.0
 var pending_mouse_input : Vector2 = Vector2(0,0)
 var input_pressed: bool = false
 
+func _ready() -> void:
+	Global.add_input_action("move_forward", KEY_W)
+	Global.add_input_action("move_backward", KEY_S)
+	Global.add_input_action("move_left", KEY_A)
+	Global.add_input_action("move_right", KEY_D)
+	Global.add_input_action("move_jump", KEY_SPACE)
+	Global.add_input_action("move_sprint", KEY_SHIFT)
+	Global.add_input_action("move_crouch", KEY_CTRL)
+	
+	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
+	
+	if GRAVITY_OVERRIDE > 0.0:
+		PhysicsServer3D.area_set_param(get_viewport().find_world_3d().space, PhysicsServer3D.AREA_PARAM_GRAVITY, 20.0)
 
 func _process(delta: float) ->void:
 	#_handle_head_movement()
@@ -81,7 +95,6 @@ func _physics_process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		pending_mouse_input = event.relative
-
 
 #####
 
