@@ -58,13 +58,13 @@ var pending_mouse_input : Vector2 = Vector2(0,0)
 var input_pressed: bool = false
 
 func _ready() -> void:
-	Global.add_input_action("move_forward", KEY_W)
-	Global.add_input_action("move_backward", KEY_S)
-	Global.add_input_action("move_left", KEY_A)
-	Global.add_input_action("move_right", KEY_D)
-	Global.add_input_action("move_jump", KEY_SPACE)
-	Global.add_input_action("move_sprint", KEY_SHIFT)
-	Global.add_input_action("move_crouch", KEY_CTRL)
+	Util.add_input_action("move_forward", KEY_W)
+	Util.add_input_action("move_backward", KEY_S)
+	Util.add_input_action("move_left", KEY_A)
+	Util.add_input_action("move_right", KEY_D)
+	Util.add_input_action("move_jump", KEY_SPACE)
+	Util.add_input_action("move_sprint", KEY_SHIFT)
+	Util.add_input_action("move_crouch", KEY_CTRL)
 	
 	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
 	

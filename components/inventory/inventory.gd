@@ -2,6 +2,9 @@ class_name Inventory extends Node
 
 var items: Array[String] = []
 
+func _ready():
+	Util.add_input_action("game_inventory", KEY_I)
+
 func print_items():
 	if not items:
 		print("Empty")

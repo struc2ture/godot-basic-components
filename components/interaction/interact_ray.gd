@@ -6,6 +6,8 @@ var hovered_interactable: Interactable = null
 
 
 func _ready():
+	Util.add_input_action("game_activate", KEY_E)
+
 	assert(PLAYER)
 
 

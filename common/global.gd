@@ -6,19 +6,11 @@ var overlay_active: bool = false
 var _current_scene = null
 
 func _ready() -> void:
-	add_input_action("debug_toggle_mouse", KEY_QUOTELEFT)
+	Util.add_input_action("debug_toggle_mouse", KEY_QUOTELEFT)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
 	var root = get_tree().root
 	_current_scene = root.get_child(-1)
-
-
-func add_input_action(action: StringName, physical_keycode: Key):
-	if not InputMap.has_action(action):
-		var event = InputEventKey.new()
-		event.physical_keycode  = physical_keycode
-		InputMap.add_action(action)
-		InputMap.action_add_event(action, event)
 
 
 func _process(delta: float) -> void:
